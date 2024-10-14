@@ -7,13 +7,17 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcryptjs';
 import { AuthDto } from './dto/auth.dto';
-import { UserDocument } from 'src/users/schemas/user.schema';
+import { User, UserDocument } from 'src/users/schemas/user.schema';
+import { RefreshTokenDto } from './dto/refreshToken.dto';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
+    @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
   ) {}
 
   async validateUser(email: string, password: string): Promise<UserDocument> {
@@ -28,6 +32,28 @@ export class AuthService {
 
   async login(dto: AuthDto) {
     const user = await this.validateUser(dto.email, dto.password);
+
+    const tokens = await this.issueTokenPair(String(user._id));
+
+    return {
+      user: {
+        _id: user._id,
+        email: user.email,
+        userName: user.userName,
+        isAdmin: user.isAdmin,
+        isVolonteer: user.isVolonteer,
+      },
+      ...tokens,
+    };
+  }
+
+  async getNewTokens({ refreshToken }: RefreshTokenDto) {
+    if (!refreshToken) throw new UnauthorizedException('Please sign in');
+
+    const result = await this.jwtService.verifyAsync(refreshToken);
+    if (!result) throw new UnauthorizedException('Invalid token or expired');
+
+    const user = await this.userModel.findById(result._id);
 
     const tokens = await this.issueTokenPair(String(user._id));
 
