@@ -15,10 +15,10 @@ export class User {
   userName: string;
 
   @Prop({ default: false })
-  isAdmin: boolean;
+  isAdmin?: boolean;
 
   @Prop({ default: false })
-  isVolonteer: boolean;
+  isVolonteer?: boolean;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

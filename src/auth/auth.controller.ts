@@ -13,8 +13,7 @@ export class AuthController {
 
   @Post('register')
   async register(@Body() req) {
-    const { email, password, userName, isAdmin, isVolonteer } = req;
-    return this.authService.register(email, password, userName, isAdmin, isVolonteer);
+    return this.authService.register(req);
   }
 
   @UseGuards(JwtAuthGuard)
