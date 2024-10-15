@@ -9,6 +9,7 @@ import {
   HttpCode,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { Auth } from './decorators/auth.decorator';
 import { RefreshTokenDto } from './dto/refreshToken.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
@@ -37,8 +38,8 @@ export class AuthController {
     return this.authService.register(req);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post('profile')
+  @Auth('admin')
   getProfile(@Request() req) {
     return req.user;
   }
