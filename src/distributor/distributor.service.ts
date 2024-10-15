@@ -1,8 +1,12 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { UserService } from 'src/user/user.service';
-import { CreateDistributorDto } from './dto/create-distributor.dto';
+import { UpdateDistributorDto } from './dto/update-distributor.dto';
 import { Distributor, DistributorDocument } from './schemas/distributor.schema';
 
 @Injectable()
@@ -14,7 +18,7 @@ export class DistributorService {
   ) {}
 
   async create(
-    dto: CreateDistributorDto,
+    dto: UpdateDistributorDto,
     userId: string,
   ): Promise<DistributorDocument> {
     const oldDistributor = await this.distributorModel.findOne({
@@ -37,5 +41,25 @@ export class DistributorService {
     user.save();
 
     return newDistributor.save();
+  }
+
+  async update(
+    dto: UpdateDistributorDto,
+    id: Types.ObjectId,
+  ): Promise<DistributorDocument> {
+    const updateDoc = await this.distributorModel
+      .findByIdAndUpdate(id, dto, { new: true })
+      .exec();
+
+    if (!updateDoc) throw new NotFoundException('Distributor not found');
+
+    return updateDoc;
+  }
+
+  async delete(id: Types.ObjectId) {
+    const deleteDoc = await this.distributorModel.findByIdAndDelete(id).exec();
+    if (!deleteDoc) throw new NotFoundException('Distributor not found');
+
+    return deleteDoc;
   }
 }
