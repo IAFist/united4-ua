@@ -6,11 +6,15 @@ import { User, UserDocument } from './schemas/user.schema';
 import { AuthDto } from 'src/auth/dto/auth.dto';
 
 @Injectable()
-export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+export class UserService {
+  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
   async findOneByEmail(email: string): Promise<UserDocument | undefined> {
     return this.userModel.findOne({ email }).exec();
+  }
+
+  async findOneById(id: string): Promise<UserDocument | undefined> {
+    return this.userModel.findById(id).exec();
   }
 
   async createUser(dto: AuthDto): Promise<UserDocument> {
@@ -22,6 +26,7 @@ export class UsersService {
       userName: dto.userName,
       isAdmin: false,
       isVolonteer: false,
+      isDistributor: false,
     });
 
     return newUser.save();

@@ -4,10 +4,10 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from '../users/users.service';
+import { UserService } from '../user/user.service';
 import * as bcrypt from 'bcryptjs';
 import { AuthDto } from './dto/auth.dto';
-import { User, UserDocument } from 'src/users/schemas/user.schema';
+import { User, UserDocument } from 'src/user/schemas/user.schema';
 import { RefreshTokenDto } from './dto/refreshToken.dto';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
@@ -15,13 +15,13 @@ import { InjectModel } from '@nestjs/mongoose';
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UsersService,
+    private userService: UserService,
     private jwtService: JwtService,
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
   ) {}
 
   async validateUser(email: string, password: string): Promise<UserDocument> {
-    const user = await this.usersService.findOneByEmail(email);
+    const user = await this.userService.findOneByEmail(email);
     if (!user) throw new UnauthorizedException('User not found');
 
     const isValidPassword = await bcrypt.compare(password, user.password);
@@ -42,6 +42,7 @@ export class AuthService {
         userName: user.userName,
         isAdmin: user.isAdmin,
         isVolonteer: user.isVolonteer,
+        isDistributor: user.isDistributor,
       },
       ...tokens,
     };
@@ -64,20 +65,21 @@ export class AuthService {
         userName: user.userName,
         isAdmin: user.isAdmin,
         isVolonteer: user.isVolonteer,
+        isDistributor: user.isDistributor,
       },
       ...tokens,
     };
   }
 
   async register(dto: AuthDto) {
-    const oldUser = await this.usersService.findOneByEmail(dto.email);
+    const oldUser = await this.userService.findOneByEmail(dto.email);
 
     if (oldUser)
       throw new BadRequestException(
         `A User with this email has already existed in the system `,
       );
 
-    const user = await this.usersService.createUser(dto);
+    const user = await this.userService.createUser(dto);
 
     const tokens = await this.issueTokenPair(String(user._id));
 
@@ -88,6 +90,7 @@ export class AuthService {
         userName: user.userName,
         isAdmin: user.isAdmin,
         isVolonteer: user.isVolonteer,
+        isDistributor: user.isDistributor,
       },
       ...tokens,
     };
