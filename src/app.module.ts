@@ -17,8 +17,13 @@ import { DistributorModule } from './distributor/distributor.module';
       }),
     }),
     AuthModule,
+<<<<<<< HEAD
     UserModule,
     DistributorModule,
+=======
+    DistributorModule,
+    UserModule,
+>>>>>>> deef30b142c3015304b333012d103ab21d1e3996
     CategoryModule,
   ],
   controllers: [AppController],
