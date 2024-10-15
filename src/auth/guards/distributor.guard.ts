@@ -13,7 +13,7 @@ export class OnlyDistributorGuard implements CanActivate {
     const request = context.switchToHttp().getRequest<{ user: User }>();
     const user = request.user;
 
-    if (!user.isDistributor)
+    if (!user.isDistributor && !user.isAdmin)
       throw new ForbiddenException('You have not rights');
 
     return user.isDistributor;
