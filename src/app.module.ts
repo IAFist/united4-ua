@@ -3,6 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { CategoryTovarModule } from './category-tovar/category-tovar.module';
+import { CategoryDonateModule } from './category-donate/category-donate.module';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -24,6 +25,7 @@ import { GatheringModule } from './gathering/gathering.module';
     CategoryTovarModule,
     ProductModule,
     GatheringModule,
+    CategoryDonateModule,
   ],
   controllers: [AppController],
   providers: [AppService],

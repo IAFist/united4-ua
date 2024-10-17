@@ -3,7 +3,7 @@ import { CategoryTovarService } from './category-tovar.service';
 import { CategoryTovarDto } from './dto/category-tovar.dto';
 import { CategoryTovar } from './interfaces/category-tovar.interface';
 
-@Controller('categories')
+@Controller('categories-tovary')
 export class CategoryTovarController {
   constructor(private readonly categoryService: CategoryTovarService) {}
 

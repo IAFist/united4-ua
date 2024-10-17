@@ -6,7 +6,7 @@ import { CategoryDonateSchema } from './schemas/category-donate.schema';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: 'Category', schema: CategoryDonateSchema }]),
+    MongooseModule.forFeature([{ name: 'CategoryDonate', schema: CategoryDonateSchema }]),
   ],
   controllers: [CategoryDonateController],
   providers: [CategoryDonateService],

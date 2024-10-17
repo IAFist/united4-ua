@@ -7,7 +7,7 @@ import { CategoryTovarDto } from './dto/category-tovar.dto';
 @Injectable()
 export class CategoryTovarService {
   constructor(
-    @InjectModel('Category') private readonly categoryModel: Model<CategoryTovar>,
+    @InjectModel('CategoryTovar') private readonly categoryModel: Model<CategoryTovar>,
   ) {}
 
   async create(CategoryDto: CategoryTovarDto): Promise<CategoryTovar> {
@@ -24,7 +24,7 @@ export class CategoryTovarService {
       .findByIdAndUpdate(id, CategoryDto, { new: true })
       .exec();
     if (!updatedCategory) {
-      throw new NotFoundException(`Category with ID ${id} not found`);
+      throw new NotFoundException(`CategoryTovar with ID ${id} not found`);
     }
     return updatedCategory;
   }
@@ -32,7 +32,7 @@ export class CategoryTovarService {
   async delete(id: string): Promise<void> {
     const result = await this.categoryModel.findByIdAndDelete(id).exec();
     if (!result) {
-      throw new NotFoundException(`Category with ID ${id} not found`);
+      throw new NotFoundException(`CategoryTovar with ID ${id} not found`);
     }
   }
 }

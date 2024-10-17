@@ -11,5 +11,5 @@ export class ProductDto {
   price: number;
 
   @IsString()
-  category: string;
+  categorytovar: string;
 }

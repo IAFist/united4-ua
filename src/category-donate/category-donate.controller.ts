@@ -3,7 +3,7 @@ import { CategoryDonateService } from './category-donate.service';
 import { CategoryDonateDto } from './dto/category-donate.dto';
 import { CategoryDonate } from './interfaces/category-donate.interface';
 
-@Controller('categories')
+@Controller('categories-donate')
 export class CategoryDonateController {
   constructor(private readonly categoryService: CategoryDonateService) {}
 

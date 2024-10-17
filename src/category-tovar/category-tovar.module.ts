@@ -6,7 +6,7 @@ import { CategoryTovarSchema } from './schemas/category-tovar.schema';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: 'Category', schema: CategoryTovarSchema }]),
+    MongooseModule.forFeature([{ name: 'CategoryTovar', schema: CategoryTovarSchema }]),
   ],
   controllers: [CategoryTovarController],
   providers: [CategoryTovarService],

@@ -16,11 +16,11 @@ export class ProductService {
   }
 
   async findAll(): Promise<Product[]> {
-    return this.productModel.find().populate('category').exec();
+    return this.productModel.find().populate('CategoryTovar').exec();
   }
 
   async findById(id: string): Promise<Product> {
-    const product = await this.productModel.findById(id).populate('category').exec();
+    const product = await this.productModel.findById(id).populate('CategoryTovar').exec();
     if (!product) {
       throw new NotFoundException(`Product with ID ${id} not found`);
     }
@@ -30,7 +30,7 @@ export class ProductService {
   async update(id: string, productDto: ProductDto): Promise<Product> {
     const updatedProduct = await this.productModel
       .findByIdAndUpdate(id, productDto, { new: true })
-      .populate('category')
+      .populate('CategoryTovar')
       .exec();
     if (!updatedProduct) {
       throw new NotFoundException(`Product with ID ${id} not found`);
