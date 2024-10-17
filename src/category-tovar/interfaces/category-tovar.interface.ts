@@ -1,4 +1,4 @@
-export interface Category {
+export interface CategoryTovar {
   id?: string;
   name: string;
 }

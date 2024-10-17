@@ -1,25 +1,25 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Category } from './interfaces/category.interface';
-import { CategoryDto } from './dto/category.dto';
+import { CategoryDonate } from './interfaces/category-donate.interface';
+import { CategoryDonateDto } from './dto/category-donate.dto';
 
 @Injectable()
-export class CategoryService {
+export class CategoryDonateService {
   constructor(
-    @InjectModel('Category') private readonly categoryModel: Model<Category>,
+    @InjectModel('Category') private readonly categoryModel: Model<CategoryDonate>,
   ) {}
 
-  async create(CategoryDto: CategoryDto): Promise<Category> {
+  async create(CategoryDto: CategoryDonateDto): Promise<CategoryDonate> {
     const newCategory = new this.categoryModel(CategoryDto);
     return newCategory.save();
   }
 
-  async findAll(): Promise<Category[]> {
+  async findAll(): Promise<CategoryDonate[]> {
     return this.categoryModel.find().exec();
   }
 
-  async update(id: string, CategoryDto: CategoryDto): Promise<Category> {
+  async update(id: string, CategoryDto: CategoryDonateDto): Promise<CategoryDonate> {
     const updatedCategory = await this.categoryModel
       .findByIdAndUpdate(id, CategoryDto, { new: true })
       .exec();

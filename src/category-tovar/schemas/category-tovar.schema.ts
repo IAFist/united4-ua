@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
 
-export const CategorySchema = new Schema({
+export const CategoryTovarSchema = new Schema({
   name: { type: String, required: true, unique: true },
 });
