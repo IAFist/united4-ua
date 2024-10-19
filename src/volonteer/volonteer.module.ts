@@ -14,5 +14,6 @@ import { Volonteer, VolonteerSchema } from './schemas/volonteer.schema';
   ],
   controllers: [VolonteerController],
   providers: [VolonteerService],
+  exports: [VolonteerService],
 })
 export class VolonteerModule {}

@@ -15,7 +15,7 @@ import { TelegramService } from 'src/telegram/telegram.service';
 @Injectable()
 export class DistributorService {
   constructor(
-    @InjectModel(Distributor.name) 
+    @InjectModel(Distributor.name)
     private readonly distributorModel: Model<Distributor>,
     private readonly userService: UserService,
     @Inject(forwardRef(() => TelegramService))
