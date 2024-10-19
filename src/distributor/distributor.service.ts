@@ -1,5 +1,7 @@
 import {
   BadRequestException,
+  forwardRef,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -8,7 +10,7 @@ import { Model, Types } from 'mongoose';
 import { UserService } from 'src/user/user.service';
 import { UpdateDistributorDto } from './dto/update-distributor.dto';
 import { Distributor, DistributorDocument } from './schemas/distributor.schema';
-import { TelegramService } from 'src/telegram/telegram.service'
+import { TelegramService } from 'src/telegram/telegram.service';
 
 @Injectable()
 export class DistributorService {
@@ -16,7 +18,8 @@ export class DistributorService {
     @InjectModel(Distributor.name) 
     private readonly distributorModel: Model<Distributor>,
     private readonly userService: UserService,
-    private readonly telegramService: TelegramService
+    @Inject(forwardRef(() => TelegramService))
+    private readonly telegramService: TelegramService,
   ) {}
 
   async create(
@@ -44,25 +47,25 @@ export class DistributorService {
                  Distributor Name: ${dto.name}`;
 
     await this.telegramService.sendMessage(msg, {
-        reply_markup: {
-          inline_keyboard: [
-            [
-              {
-                text: 'Підтвердити',
-                callback_data: 'confirm_distributor',
-              },
-              {
-                text: 'Скасувати',
-                callback_data: 'cancel_distributor',
-              },
-            ],
+      reply_markup: {
+        inline_keyboard: [
+          [
+            {
+              text: 'Підтвердити',
+              callback_data: 'confirm_distributor',
+            },
+            {
+              text: 'Скасувати',
+              callback_data: 'cancel_distributor',
+            },
           ],
-        },
+        ],
+      },
     });
   }
 
   async handleConfirmation(
-    distributorData: { edrpou: string, name: string },
+    distributorData: { edrpou: string; name: string },
     userId: string,
   ): Promise<DistributorDocument> {
     const { edrpou, name } = distributorData;
@@ -72,7 +75,7 @@ export class DistributorService {
     const newDistributor = await this.distributorModel.create({
       edrpou,
       name,
-      userId: new Types.ObjectId(userId)
+      userId,
     });
 
     user.isDistributor = true;

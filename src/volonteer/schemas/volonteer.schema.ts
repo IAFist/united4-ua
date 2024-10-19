@@ -10,6 +10,9 @@ export class Volonteer {
 
   @Prop({ type: Types.ObjectId, ref: 'User' })
   userId: Types.ObjectId;
+
+  @Prop({ type: Types.ObjectId, ref: 'Rating', required: true })
+  rating: Types.ObjectId;
 }
 
 export const VolonteerSchema = SchemaFactory.createForClass(Volonteer);

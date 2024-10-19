@@ -1,10 +1,10 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { TelegramModule } from 'src/telegram/telegram.module';
 import { UserModule } from 'src/user/user.module';
 import { DistributorController } from './distributor.controller';
 import { DistributorService } from './distributor.service';
 import { Distributor, DistributorSchema } from './schemas/distributor.schema';
-import { TelegramModule } from 'src/telegram/telegram.module';
 
 @Module({
   imports: [
@@ -12,10 +12,10 @@ import { TelegramModule } from 'src/telegram/telegram.module';
       { name: Distributor.name, schema: DistributorSchema },
     ]),
     UserModule,
-    TelegramModule,
+    forwardRef(() => TelegramModule),
   ],
   controllers: [DistributorController],
   providers: [DistributorService],
-  exports:[DistributorService],
+  exports: [DistributorService],
 })
 export class DistributorModule {}
