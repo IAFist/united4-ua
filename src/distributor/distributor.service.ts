@@ -13,8 +13,7 @@ import { TelegramService } from 'src/telegram/telegram.service'
 @Injectable()
 export class DistributorService {
   constructor(
-    @InjectModel(Distributor.name)
-    private readonly distributorModel: Model<Distributor>,
+    @InjectModel(Distributor.name) private readonly distributorModel: Model<Distributor>,
     private readonly userService: UserService,
     private readonly telegramService: TelegramService
   ) {}
