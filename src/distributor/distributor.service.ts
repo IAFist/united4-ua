@@ -66,6 +66,7 @@ export class DistributorService {
 
   async handleConfirmation(
     distributorData: { edrpou: string; name: string },
+
     userId: string,
   ): Promise<DistributorDocument> {
     const { edrpou, name } = distributorData;

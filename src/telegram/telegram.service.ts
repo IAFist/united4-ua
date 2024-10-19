@@ -1,4 +1,4 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { getTelegramConfig } from './telegram.config';
 import { Telegraf } from 'telegraf';
 import { ExtraReplyMessage } from 'telegraf/typings/telegram-types';
@@ -10,10 +10,7 @@ export class TelegramService {
   bot: Telegraf;
   options: Telegram;
 
-  constructor(
-    @Inject(forwardRef(() => DistributorService))
-    private readonly distributorService: DistributorService,
-  ) {
+  constructor(private readonly distributorService: DistributorService) {
     this.options = getTelegramConfig();
     this.bot = new Telegraf(this.options.token);
 
