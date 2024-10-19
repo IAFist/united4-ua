@@ -21,7 +21,16 @@ export class Gathering {
   text: string;
 
   @Prop({ required: true })
+  card_account: string;
+
+  @Prop({ required: true })
   currentSum: number;
+
+  @Prop({ required: true })
+  donaters: number;
+
+  @Prop({ default: false })
+  complete?: boolean;
 
   @Prop({ required: true })
   countOfProduct: number;

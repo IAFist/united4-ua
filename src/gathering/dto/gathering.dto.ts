@@ -15,10 +15,19 @@ export class GatheringDto {
   user: string;
 
   @IsString()
-  text: string;
+  card_account: string;
 
   @IsString()
+  text: string;
+
+  @IsNumber()
   currentSum: number;
+
+  @IsNumber()
+  donaters: number;
+
+  @IsString()
+  complete: boolean;
 
   @IsString()
   product: string;

@@ -25,6 +25,7 @@ import {
       const newVolonteer = await this.volonteerModel.create({
         name: dto.name,
         userId: userId,
+        rating:0,
       });
   
       const user = await this.userService.findOneById(userId);
