@@ -26,7 +26,7 @@ export class DistributorController {
   @Post()
   @Auth()
   async create(@Body() dto: UpdateDistributorDto, @User('_id') _id: string) {
-    return this.distributorService.create(dto, _id);
+    return this.distributorService.create(dto, _id, dto.photoUrl);
   }
 
   @UsePipes(new ValidationPipe())

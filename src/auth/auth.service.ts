@@ -11,7 +11,6 @@ import { User, UserDocument } from 'src/user/schemas/user.schema';
 import { RefreshTokenDto } from './dto/refreshToken.dto';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { TelegramService } from 'src/telegram/telegram.service'
 
 @Injectable()
 export class AuthService {
@@ -19,7 +18,6 @@ export class AuthService {
     private userService: UserService,
     private jwtService: JwtService,
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
-    private readonly telegramService: TelegramService
   ) {}
 
   async validateUser(email: string, password: string): Promise<UserDocument> {
