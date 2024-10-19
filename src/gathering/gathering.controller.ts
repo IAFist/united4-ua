@@ -24,6 +24,7 @@ export class GatheringController {
   constructor(private readonly gatheringService: GatheringService) {}
 
   @Post('create')
+  @Auth()
   @UseInterceptors(
     FileInterceptor('img', {
       storage: diskStorage({
