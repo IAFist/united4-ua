@@ -10,7 +10,15 @@ export class GatheringService {
     @InjectModel('Gathering') private readonly gatheringModel: Model<Gathering>,
   ) {}
 
-  async create(createGatheringDto: GatheringDto): Promise<GatheringDocument> {
+  async create(
+    createGatheringDto: GatheringDto,
+    file: Express.Multer.File,
+  ): Promise<GatheringDocument> {
+    if (file) {
+      const filename = file.filename;
+      createGatheringDto.img = filename;
+    }
+
     const newGathering = new this.gatheringModel(createGatheringDto);
     return newGathering.save();
   }

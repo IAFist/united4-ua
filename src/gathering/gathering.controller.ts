@@ -6,9 +6,14 @@ import {
   Param,
   Put,
   Delete,
+  UseInterceptors,
+  UploadedFile
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { GatheringService } from './gathering.service';
 import { GatheringDto } from './dto/gathering.dto';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
 import { Gathering } from './schemas/gathering.shema';
 import { Auth } from 'src/auth/decorators/auth.decorator';
 
@@ -16,9 +21,28 @@ import { Auth } from 'src/auth/decorators/auth.decorator';
 export class GatheringController {
   constructor(private readonly gatheringService: GatheringService) {}
 
-  @Post()
-  async create(@Body() createGatheringDto: GatheringDto): Promise<Gathering> {
-    return this.gatheringService.create(createGatheringDto);
+  @Post('create')
+  @UseInterceptors(
+    FileInterceptor('img', {
+      storage: diskStorage({
+        destination: 'src/uploads',
+        filename: (req, file, cb) => {
+          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+          const fileExt = extname(file.originalname);
+          cb(null, `${uniqueSuffix}${fileExt}`);
+        },
+      }),
+    }),
+  )
+  async create(
+    @Body() createGatheringDto: GatheringDto,
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<Gathering> {
+    if (file) {
+      createGatheringDto.img = file.filename;
+    }
+
+    return this.gatheringService.create(createGatheringDto, file);
   }
 
   @Get()

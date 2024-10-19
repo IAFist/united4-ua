@@ -30,6 +30,9 @@ export class GatheringDto {
   complete: boolean;
 
   @IsString()
+  img: string;
+
+  @IsString()
   product: string;
 
   @IsNumber()

@@ -33,6 +33,9 @@ export class Gathering {
   complete?: boolean;
 
   @Prop({ required: true })
+  photo: string;
+
+  @Prop({ required: true })
   countOfProduct: number;
 
   @Prop({ type: Types.ObjectId, ref: 'Product', required: true })
