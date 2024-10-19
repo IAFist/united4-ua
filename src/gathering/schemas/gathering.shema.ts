@@ -8,14 +8,14 @@ export class Gathering {
   @Prop({ required: true })
   name: string;
 
-  @Prop({ required: true})
+  @Prop({ required: true })
   g_date_start: Date;
 
-  @Prop({ required: true})
+  @Prop({ required: true })
   g_date_finish: Date;
 
-  @Prop({ type: Types.ObjectId, ref: 'User' })
-  userId: Types.ObjectId;
+  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
+  user: Types.ObjectId;
 
   @Prop({ required: true })
   text: string;
@@ -23,8 +23,14 @@ export class Gathering {
   @Prop({ required: true })
   currentSum: number;
 
-  @Prop({type: Types.ObjectId, ref: 'Product', required: true })
+  @Prop({ required: true })
+  countOfProduct: number;
+
+  @Prop({ type: Types.ObjectId, ref: 'Product', required: true })
   product: Types.ObjectId;
+
+  @Prop({ default: 0 })
+  rating?: number;
 }
 
 export const GatheringSchema = SchemaFactory.createForClass(Gathering);

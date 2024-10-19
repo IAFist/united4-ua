@@ -1,3 +1,4 @@
+import { IsNumber } from 'class-validator';
 import { IsString } from 'class-validator';
 
 export class GatheringDto {
@@ -21,4 +22,7 @@ export class GatheringDto {
 
   @IsString()
   product: string;
+
+  @IsNumber()
+  countOfProduct: number;
 }

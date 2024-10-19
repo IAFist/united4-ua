@@ -11,6 +11,7 @@ import { DistributorModule } from './distributor/distributor.module';
 import { ProductModule } from './product/product.module';
 import { GatheringModule } from './gathering/gathering.module';
 import { TelegramModule } from './telegram/telegram.module'
+import { RatingModule } from './rating/rating.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { TelegramModule } from './telegram/telegram.module'
     GatheringModule,
     CategoryDonateModule,
     TelegramModule,
+    RatingModule,
   ],
   controllers: [AppController],
   providers: [AppService],

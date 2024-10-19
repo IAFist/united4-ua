@@ -1,9 +1,18 @@
-import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Put,
+  Delete,
+} from '@nestjs/common';
 import { GatheringService } from './gathering.service';
 import { GatheringDto } from './dto/gathering.dto';
 import { Gathering } from './schemas/gathering.shema';
+import { Auth } from 'src/auth/decorators/auth.decorator';
 
-@Controller('gatherings')
+@Controller('gathering')
 export class GatheringController {
   constructor(private readonly gatheringService: GatheringService) {}
 
