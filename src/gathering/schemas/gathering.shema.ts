@@ -9,7 +9,10 @@ export class Gathering {
   name: string;
 
   @Prop({ required: true})
-  g_date: Date;
+  g_date_start: Date;
+
+  @Prop({ required: true})
+  g_date_finish: Date;
 
   @Prop({ type: Types.ObjectId, ref: 'User' })
   userId: Types.ObjectId;

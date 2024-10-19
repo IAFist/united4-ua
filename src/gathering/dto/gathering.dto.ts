@@ -5,7 +5,10 @@ export class GatheringDto {
   name: string;
 
   @IsString()
-  g_date: Date;
+  g_date_start: Date;
+
+  @IsString()
+  g_date_finish: Date;
 
   @IsString()
   user: string;
