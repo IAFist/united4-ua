@@ -12,9 +12,6 @@ export class GatheringDto {
   g_date_finish: Date;
 
   @IsString()
-  user: string;
-
-  @IsString()
   card_account: string;
 
   @IsString()

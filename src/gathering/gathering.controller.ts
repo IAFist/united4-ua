@@ -16,6 +16,8 @@ import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { Gathering } from './schemas/gathering.shema';
 import { Auth } from 'src/auth/decorators/auth.decorator';
+import { User } from 'src/user/decorators/user.decorator';
+import { Types } from 'mongoose';
 
 @Controller('gathering')
 export class GatheringController {
@@ -37,12 +39,13 @@ export class GatheringController {
   async create(
     @Body() createGatheringDto: GatheringDto,
     @UploadedFile() file: Express.Multer.File,
+    @User('_id') userId: Types.ObjectId,
   ): Promise<Gathering> {
     if (file) {
       createGatheringDto.img = file.filename;
     }
 
-    return this.gatheringService.create(createGatheringDto, file);
+    return this.gatheringService.create(createGatheringDto, userId, file);
   }
 
   @Get()

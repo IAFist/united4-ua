@@ -33,7 +33,7 @@ export class Gathering {
   complete?: boolean;
 
   @Prop({ required: true })
-  photo: string;
+  img: string;
 
   @Prop({ required: true })
   countOfProduct: number;

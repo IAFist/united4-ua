@@ -12,6 +12,7 @@ export class GatheringService {
 
   async create(
     createGatheringDto: GatheringDto,
+    userId: Types.ObjectId,
     file: Express.Multer.File,
   ): Promise<GatheringDocument> {
     if (file) {
@@ -19,7 +20,10 @@ export class GatheringService {
       createGatheringDto.img = filename;
     }
 
-    const newGathering = new this.gatheringModel(createGatheringDto);
+    const newGathering = new this.gatheringModel({
+      user: userId,
+      ...createGatheringDto,
+    });
     return newGathering.save();
   }
 
