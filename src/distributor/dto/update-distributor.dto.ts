@@ -6,4 +6,7 @@ export class UpdateDistributorDto {
 
   @IsString()
   edrpou: string;
+
+  @IsString()
+  photoUrl: string;
 }
