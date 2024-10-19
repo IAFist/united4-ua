@@ -39,7 +39,6 @@ export class GatheringService {
     return this.gatheringModel
       .find()
       .populate('user')
-      .populate('product')
       .exec();
   }
 
@@ -47,7 +46,6 @@ export class GatheringService {
     const gathering = await this.gatheringModel
       .findById(id)
       .populate('user')
-      .populate('product')
       .exec();
     if (!gathering) {
       throw new NotFoundException(`Gathering with ID ${id} not found`);
@@ -62,7 +60,6 @@ export class GatheringService {
     const updatedGathering = await this.gatheringModel
       .findByIdAndUpdate(id, updateGatheringDto, { new: true })
       .populate('user')
-      .populate('product')
       .exec();
     if (!updatedGathering) {
       throw new NotFoundException(`Gathering with ID ${id} not found`);

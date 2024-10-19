@@ -38,8 +38,8 @@ export class Gathering {
   @Prop({ required: true })
   countOfProduct: number;
 
-  @Prop({ type: Types.ObjectId, ref: 'Product', required: true })
-  product: Types.ObjectId;
+  @Prop({ required: true })
+  totalSum: number;
 
   @Prop({ default: 0 })
   rating?: number;

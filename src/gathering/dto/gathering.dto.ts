@@ -32,8 +32,8 @@ export class GatheringDto {
   @IsString()
   img: string;
 
-  @IsString()
-  product: string;
+  @IsNumber()
+  totalSum: number;
 
   @IsNumber()
   countOfProduct: number;
