@@ -10,6 +10,7 @@ import { AppService } from './app.service';
 import { DistributorModule } from './distributor/distributor.module';
 import { ProductModule } from './product/product.module';
 import { GatheringModule } from './gathering/gathering.module';
+import { TelegramModule } from './telegram/telegram.module'
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { GatheringModule } from './gathering/gathering.module';
     ProductModule,
     GatheringModule,
     CategoryDonateModule,
+    TelegramModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -23,6 +23,10 @@ export class AuthController {
   async login(@Body() req) {
     return this.authService.login(req);
   }
+  @Post('send')
+  async sendNotification(){
+    return this.authService.sendNotification("asiudvhbjkdsf");
+  }
 
   @UsePipes(new ValidationPipe())
   @HttpCode(200)

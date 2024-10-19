@@ -8,6 +8,7 @@ import { AuthController } from './auth.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from 'src/user/schemas/user.schema';
+import { TelegramModule } from 'src/telegram/telegram.module'
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { User, UserSchema } from 'src/user/schemas/user.schema';
     }),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     UserModule,
+    TelegramModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
