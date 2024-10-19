@@ -8,6 +8,7 @@ import { Model, Types } from 'mongoose';
 import { UserService } from 'src/user/user.service';
 import { UpdateDistributorDto } from './dto/update-distributor.dto';
 import { Distributor, DistributorDocument } from './schemas/distributor.schema';
+import { TelegramService } from 'src/telegram/telegram.service'
 
 @Injectable()
 export class DistributorService {
@@ -15,12 +16,14 @@ export class DistributorService {
     @InjectModel(Distributor.name)
     private readonly distributorModel: Model<Distributor>,
     private readonly userService: UserService,
+    private readonly telegramService: TelegramService
   ) {}
 
   async create(
     dto: UpdateDistributorDto,
     userId: string,
-  ): Promise<DistributorDocument> {
+    photoUrl: string,
+  ): Promise<void> {
     const oldDistributor = await this.distributorModel.findOne({
       edrpou: dto.edrpou,
     });
@@ -30,15 +33,50 @@ export class DistributorService {
         `A Distributor with this edrpou has already existed in the system `,
       );
 
-    const newDistributor = await this.distributorModel.create({
-      edrpou: dto.edrpou,
-      name: dto.name,
-      userId: userId,
+    const user = await this.userService.findOneById(userId);
+
+    await this.telegramService.sendPhoto(photoUrl);
+
+    const msg = `<b>User Information:</b>\n
+                 Name: ${user.userName}\n
+                 Email: ${user.email}\n
+                 EDRPOU: ${dto.edrpou}\n
+                 Distributor Name: ${dto.name}`;
+
+    await this.telegramService.sendMessage(msg, {
+        reply_markup: {
+          inline_keyboard: [
+            [
+              {
+                text: 'Підтвердити',
+                callback_data: 'confirm_distributor',
+              },
+              {
+                text: 'Скасувати',
+                callback_data: 'cancel_distributor',
+              },
+            ],
+          ],
+        },
     });
+  }
+
+  async handleConfirmation(
+    distributorData: { edrpou: string, name: string },
+    userId: string,
+  ): Promise<DistributorDocument> {
+    const { edrpou, name } = distributorData;
 
     const user = await this.userService.findOneById(userId);
+
+    const newDistributor = await this.distributorModel.create({
+      edrpou,
+      name,
+      userId,
+    });
+
     user.isDistributor = true;
-    user.save();
+    await user.save();
 
     return newDistributor.save();
   }

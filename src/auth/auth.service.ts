@@ -73,26 +73,7 @@ export class AuthService {
     };
   }
 
-  async sendNotification(email) {
-		await this.telegramService.sendPhoto(
-			'https://bipbap.ru/wp-content/uploads/2017/04/0_7c779_5df17311_orig.jpg'
-		)
-
-		const msg = `<b>${email}</b>`
-
-		await this.telegramService.sendMessage(msg, {
-			reply_markup: {
-				inline_keyboard: [
-					[
-						{
-							url: 'https://okko.tv/movie/free-guy',
-							text: 'Go to watch',
-						},
-					],
-				],
-			},
-		})
-	}
+  
 
   async register(dto: AuthDto) {
     const oldUser = await this.userService.findOneByEmail(dto.email);
