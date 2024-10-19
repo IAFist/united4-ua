@@ -13,6 +13,9 @@ export class Rating {
 
   @Prop({ type: Types.ObjectId, ref: 'Gathering', required: true })
   gatheringId: Types.ObjectId;
+
+  @Prop({ type: Types.ObjectId, ref: 'Volonteer', required: true })
+  volonteerId: Types.ObjectId;
 }
 
 export const RatingSchema = SchemaFactory.createForClass(Rating);

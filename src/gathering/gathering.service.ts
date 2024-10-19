@@ -10,8 +10,14 @@ export class GatheringService {
     @InjectModel('Gathering') private readonly gatheringModel: Model<Gathering>,
   ) {}
 
-  async create(createGatheringDto: GatheringDto): Promise<GatheringDocument> {
-    const newGathering = new this.gatheringModel(createGatheringDto);
+  async create(
+    createGatheringDto: GatheringDto,
+    userId: Types.ObjectId,
+  ): Promise<GatheringDocument> {
+    const newGathering = new this.gatheringModel({
+      user: userId,
+      ...createGatheringDto,
+    });
     return newGathering.save();
   }
 
@@ -24,6 +30,14 @@ export class GatheringService {
         },
         { new: true },
       )
+      .exec();
+  }
+
+  async getGatheringsByUser(
+    userId: Types.ObjectId,
+  ): Promise<GatheringDocument[]> {
+    return await this.gatheringModel
+      .find({ user: userId }) // Используем userId напрямую
       .exec();
   }
 
