@@ -71,8 +71,6 @@ export class AuthService {
     };
   }
 
-  
-
   async register(dto: AuthDto) {
     const oldUser = await this.userService.findOneByEmail(dto.email);
 

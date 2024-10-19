@@ -19,7 +19,6 @@ export class GatheringService {
       const filename = file.filename;
       createGatheringDto.img = filename;
     }
-
     const newGathering = new this.gatheringModel({
       user: userId,
       ...createGatheringDto,
@@ -36,6 +35,14 @@ export class GatheringService {
         },
         { new: true },
       )
+      .exec();
+  }
+
+  async getGatheringsByUser(
+    userId: Types.ObjectId,
+  ): Promise<GatheringDocument[]> {
+    return await this.gatheringModel
+      .find({ user: userId })
       .exec();
   }
 
