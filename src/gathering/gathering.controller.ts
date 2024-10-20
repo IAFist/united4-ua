@@ -18,6 +18,7 @@ import { Gathering } from './schemas/gathering.shema';
 import { Auth } from 'src/auth/decorators/auth.decorator';
 import { User } from 'src/user/decorators/user.decorator';
 import { Types } from 'mongoose';
+import { UpdateGatheringDto } from './dto/updategathering.dto';
 
 @Controller('gathering')
 export class GatheringController {
@@ -62,8 +63,9 @@ export class GatheringController {
   @Put(':id')
   async update(
     @Param('id') id: string,
-    @Body() updateGatheringDto: GatheringDto,
+    @Body() updateGatheringDto: UpdateGatheringDto,
   ): Promise<Gathering> {
+    console.log("1");
     return this.gatheringService.update(id, updateGatheringDto);
   }
 

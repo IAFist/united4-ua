@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { GatheringDto } from './dto/gathering.dto';
 import { Gathering, GatheringDocument } from './schemas/gathering.shema';
+import { UpdateGatheringDto } from './dto/updategathering.dto';
 
 @Injectable()
 export class GatheringService {
@@ -75,15 +76,21 @@ export class GatheringService {
 
   async update(
     id: string,
-    updateGatheringDto: GatheringDto,
+    updateGatheringDto: UpdateGatheringDto,
   ): Promise<GatheringDocument> {
-    const updatedGathering = await this.gatheringModel
-      .findByIdAndUpdate(id, updateGatheringDto, { new: true })
-      .populate('user')
-      .exec();
-    if (!updatedGathering) {
+    const existingGathering = await this.gatheringModel.findById(id);
+  
+    if (!existingGathering) {
       throw new NotFoundException(`Gathering with ID ${id} not found`);
     }
+  
+    const newSum = existingGathering.currentSum + updateGatheringDto.currentSum;
+  
+    const updatedGathering = await this.gatheringModel
+      .findByIdAndUpdate(id, { currentSum: newSum }, { new: true });
+  
+    console.log(id, updateGatheringDto.currentSum);
+  
     return updatedGathering;
   }
 

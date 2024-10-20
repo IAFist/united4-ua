@@ -36,9 +36,11 @@ export class TelegramService {
           try {
             if (action === 'confirmdistributor') {
               await this.distributorService.handleConfirmation(distributorData, userId);
-              await ctx.answerCbQuery("Дистриб'ютора підтверджено!");
+              await ctx.answerCbQuery("Поставщика підтверджено!");
+              await ctx.sendMessage("Поставщика підтверджено!");
             } else if (action === 'canceldistributor') {
               await ctx.answerCbQuery('Дію скасовано.');
+              await ctx.sendMessage("Дію скасовано.");
             } else {
               console.error('Unknown action:', action);
               await ctx.answerCbQuery('Невідома дія.');
