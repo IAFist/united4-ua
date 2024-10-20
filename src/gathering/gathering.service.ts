@@ -47,10 +47,19 @@ export class GatheringService {
   }
 
   async findAll(): Promise<GatheringDocument[]> {
-    return this.gatheringModel
+    const gatherings = await this.gatheringModel
       .find()
       .populate('user')
       .exec();
+
+    const updatedGatherings = gatherings.map(gathering => {
+      if (gathering.img) {
+        gathering.img = `http://26.122.74.29:4200/uploads/${gathering.img}`;
+      }
+      return gathering;
+    });
+
+    return updatedGatherings;
   }
 
   async findById(id: string): Promise<GatheringDocument> {
