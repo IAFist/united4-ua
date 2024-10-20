@@ -65,7 +65,6 @@ export class GatheringController {
     @Param('id') id: string,
     @Body() updateGatheringDto: UpdateGatheringDto,
   ): Promise<Gathering> {
-    console.log("1");
     return this.gatheringService.update(id, updateGatheringDto);
   }
 

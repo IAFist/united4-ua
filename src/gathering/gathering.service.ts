@@ -85,9 +85,10 @@ export class GatheringService {
     }
   
     const newSum = existingGathering.currentSum + updateGatheringDto.currentSum;
+    const newDonates = existingGathering.donaters + 1;
   
     const updatedGathering = await this.gatheringModel
-      .findByIdAndUpdate(id, { currentSum: newSum }, { new: true });
+      .findByIdAndUpdate(id, { donaters: newDonates, currentSum: newSum }, { new: true });
   
     console.log(id, updateGatheringDto.currentSum);
   
