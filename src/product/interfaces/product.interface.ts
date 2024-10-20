@@ -7,6 +7,7 @@ export interface Product extends Document {
   name: string;
   img: string;
   price: number;
+  opus:string;
   distributor: DistributorDocument | string;
   categorytovar: CategoryTovar | string;
 }

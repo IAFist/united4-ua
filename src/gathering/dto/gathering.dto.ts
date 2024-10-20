@@ -33,7 +33,4 @@ export class GatheringDto {
 
   @IsNumber()
   totalSum: number;
-
-  @IsNumber()
-  countOfProduct: number;
 }

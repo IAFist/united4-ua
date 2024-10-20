@@ -4,6 +4,8 @@ import { Telegraf } from 'telegraf';
 import { ExtraReplyMessage } from 'telegraf/typings/telegram-types';
 import { Telegram } from './telegram.interface';
 import { DistributorService } from 'src/distributor/distributor.service';
+import axios from 'axios';
+import {message} from 'telegraf/filters';
 
 @Injectable()
 export class TelegramService {
@@ -22,21 +24,28 @@ export class TelegramService {
 
       if (callbackQuery && 'data' in callbackQuery) {
         const callbackData = callbackQuery.data;
+        const [action, userId] = callbackData.split('_');
+
+        console.log(`Callback data: ${callbackData}, Action: ${action}, UserId: ${userId}`);
 
         const message = callbackQuery.message;
 
         if (message && 'text' in message) {
           const distributorData = this.parseMessage(message.text);
-          const userId = 'userId_from_context';
 
-          if (callbackData === 'confirm_distributor') {
-            await this.distributorService.handleConfirmation(
-              distributorData,
-              userId,
-            );
-            await ctx.answerCbQuery("Дистриб'ютора підтверджено!");
-          } else if (callbackData === 'cancel_distributor') {
-            await ctx.answerCbQuery('Дію скасовано.');
+          try {
+            if (action === 'confirmdistributor') {
+              await this.distributorService.handleConfirmation(distributorData, userId);
+              await ctx.answerCbQuery("Дистриб'ютора підтверджено!");
+            } else if (action === 'canceldistributor') {
+              await ctx.answerCbQuery('Дію скасовано.');
+            } else {
+              console.error('Unknown action:', action);
+              await ctx.answerCbQuery('Невідома дія.');
+            }
+          } catch (error) {
+            console.error('Error handling distributor action:', error);
+            await ctx.answerCbQuery('Виникла помилка.');
           }
         } else {
           console.error('Message does not contain text field');
@@ -47,6 +56,8 @@ export class TelegramService {
         await ctx.answerCbQuery('Невідома дія.');
       }
     });
+
+    this.bot.launch();
   }
 
   async sendMessage(
@@ -60,23 +71,34 @@ export class TelegramService {
     });
   }
 
-  async sendPhoto(
-    photo: string,
-    msg?: string,
-    chatId: string = this.options.chatId,
-  ) {
-    await this.bot.telegram.sendPhoto(chatId, photo, {
-      caption: msg,
-    });
+  async sendPhoto(photoUrl: string, msg?: string, chatId: string = this.options.chatId) {
+    try {
+      const response = await axios.get(photoUrl, { responseType: 'arraybuffer' });
+      const buffer = Buffer.from(response.data, 'binary');
+
+      await this.bot.telegram.sendPhoto(chatId, { source: buffer }, {caption: msg});
+    } catch (error) {
+      console.error('Error sending photo:', error);
+    }
   }
 
   parseMessage(message: string) {
     const lines = message.split('\n');
-    const edrpou = lines.find((line) => line.includes('EDRPOU')).split(': ')[1];
-    const name = lines
-      .find((line) => line.includes('Distributor Name'))
-      .split(': ')[1];
-
+    
+    const edrpouLine = lines.find((line) => line.includes('EDRPOU'));
+    const nameLine = lines.find((line) => line.includes('Distributor Name'));
+  
+    if (!edrpouLine || !nameLine) {
+      throw new Error('Не вдалося знайти необхідні поля у повідомленні');
+    }
+  
+    const edrpou = edrpouLine.split(': ')[1];
+    const name = nameLine.split(': ')[1];
+  
+    if (!edrpou || !name) {
+      throw new Error('Невірний формат даних у повідомленні');
+    }
+  
     return { edrpou, name };
   }
 }

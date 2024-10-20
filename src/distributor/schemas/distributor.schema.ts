@@ -11,7 +11,7 @@ export class Distributor {
   @Prop({ required: true, unique: true })
   edrpou: string;
 
-  @Prop({ required: true})
+  @Prop({ required: false})
   photoUrl: string;
 
   @Prop({ type: Types.ObjectId, ref: 'User' })

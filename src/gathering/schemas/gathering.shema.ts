@@ -36,9 +36,6 @@ export class Gathering {
   img: string;
 
   @Prop({ required: true })
-  countOfProduct: number;
-
-  @Prop({ required: true })
   totalSum: number;
 
   @Prop({ default: 0 })

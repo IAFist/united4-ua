@@ -11,5 +11,11 @@ export class ProductDto {
   price: number;
 
   @IsString()
+  opus: string;
+
+  @IsString()
   categorytovar: string;
+
+  @IsString()
+  distributor: string;
 }

@@ -25,7 +25,6 @@ export class DistributorService {
   async create(
     dto: UpdateDistributorDto,
     userId: string,
-    photoUrl: string,
   ): Promise<void> {
     const oldDistributor = await this.distributorModel.findOne({
       edrpou: dto.edrpou,
@@ -38,7 +37,7 @@ export class DistributorService {
 
     const user = await this.userService.findOneById(userId);
 
-    await this.telegramService.sendPhoto(photoUrl);
+    await this.telegramService.sendPhoto(dto.photoUrl);
 
     const msg = `<b>User Information:</b>\n
                  Name: ${user.userName}\n
@@ -52,11 +51,11 @@ export class DistributorService {
           [
             {
               text: 'Підтвердити',
-              callback_data: 'confirm_distributor',
+              callback_data: `confirmdistributor_${userId}`,
             },
             {
               text: 'Скасувати',
-              callback_data: 'cancel_distributor',
+              callback_data: `canceldistributor_${userId}`,
             },
           ],
         ],
